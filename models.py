@@ -1,12 +1,15 @@
-# Importiamo db dall'app principale per poterlo utilizzare in questo file
-from app import db
+# Importiamo il modulo SQLAlchemy da Flask, che permette di interagire con il database in modo ORM
+from flask_sqlalchemy import SQLAlchemy
 
-# Definiamo il modello per la tabella ListaSpesa
+# Creiamo un'istanza di SQLAlchemy. Questo oggetto sarà utilizzato per definire e gestire il database.
+db = SQLAlchemy()
+
+# Definiamo la classe ListaSpesa che rappresenta la tabella nel database
 class ListaSpesa(db.Model):
-    # Definiamo la struttura della tabella
-    id = db.Column(db.Integer, primary_key=True)  # id come chiave primaria unica
-    elemento = db.Column(db.String(100), nullable=False)  # elemento non può essere nullo
-
-    # Metodo per rappresentare l'oggetto in formato leggibile
-    def __repr__(self):
-        return f"<ListaSpesa {self.elemento}>"
+    # La colonna 'id' sarà di tipo intero (Integer) e sarà la chiave primaria della tabella
+    # Questo significa che ogni valore di 'id' sarà unico e non nullo
+    id = db.Column(db.Integer, primary_key=True)
+    
+    # La colonna 'elemento' sarà di tipo stringa (String) con una lunghezza massima di 100 caratteri
+    # La proprietà 'nullable=False' garantisce che ogni record abbia un valore per questa colonna
+    elemento = db.Column(db.String(100), nullable=False)

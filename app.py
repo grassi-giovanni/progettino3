@@ -1,16 +1,38 @@
-# Importiamo SQLAlchemy dal pacchetto flask_sqlalchemy per interagire con il database
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask
+from models import db, ListaSpesa  # Importiamo db e il modello ListaSpesa dal file models.py
 
-# Configuriamo l'URI del database (in questo caso, un database SQLite locale chiamato 'lista_spesa.db')
+# Crea l'app Flask
+app = Flask(__name__)
+
+# Configura l'URI del database (in questo caso un database SQLite locale chiamato 'lista_spesa.db')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///lista_spesa.db'
 
-# Disabilitiamo il monitoraggio delle modifiche del database, in modo da risparmiare risorse
+# Disabilitiamo il monitoraggio delle modifiche per risparmiare risorse
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Inizializziamo l'oggetto SQLAlchemy con l'app Flask. Questo collega l'applicazione Flask al database.
+# Inizializziamo l'oggetto db con l'app
 db.init_app(app)
 
-# Eseguiamo il contesto dell'applicazione per assicurarsi che tutte le operazioni vengano eseguite all'interno di un contesto applicativo.
+# Eseguiamo il contesto dell'app per creare le tabelle se non esistono
 with app.app_context():
-    # Creiamo tutte le tabelle del database definite nei modelli. Questo crea il database 'lista_spesa.db' se non esiste.
-    db.create_all()
+    db.create_all()  # Crea le tabelle del database se non esistono
+
+# Aggiungiamo una route di esempio per testare
+@app.route('/')
+def home():
+    return "Benvenuto nella lista della spesa!"
+
+# Aggiungiamo una route per visualizzare gli elementi nella lista
+@app.route('/lista')
+def lista():
+    # Recupera tutti gli elementi dalla tabella ListaSpesa
+    items = ListaSpesa.query.all()
+    # Se non ci sono elementi, ritorniamo un messaggio
+    if not items:
+        return "La lista della spesa è vuota."
+    # Altrimenti, mostriamo gli elementi
+    return '<br>'.join([item.elemento for item in items])
+
+# Esegui l'app in modalità di debug
+if __name__ == "__main__":
+    app.run(debug=True)

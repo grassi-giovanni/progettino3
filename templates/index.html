@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista della Spesa</title>
+</head>
+<body>
+    <h1>Lista della Spesa</h1>
+
+    <!-- Form per aggiungere un nuovo elemento -->
+    <form action="{{ url_for('aggiungi') }}" method="POST">
+        <label for="elemento">Aggiungi un elemento:</label>
+        <input type="text" id="elemento" name="elemento" required>
+        <button type="submit">Aggiungi</button>
+    </form>
+
+    <h2>Elementi nella lista</h2>
+    {% if items %}
+        <ul>
+        {% for item in items %}
+            <li>
+                {{ item.elemento }}
+                <form action="{{ url_for('rimuovi', id=item.id) }}" method="POST" style="display:inline;">
+                    <button type="submit">Rimuovi</button>
+                </form>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>La lista è vuota.</p>
+    {% endif %}
+
+    <!-- Form per svuotare la lista -->
+    <form action="{{ url_for('svuota') }}" method="POST">
+        <button type="submit">Svuota la lista</button>
+    </form>
+
+</body>
+</html>

@@ -3,37 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista della Spesa</title>
+    <title>Lista della Spesa</title>  <!-- Titolo della pagina -->
 </head>
 <body>
-    <h1>Lista della Spesa</h1>
+    <h1>Lista della Spesa</h1> <!-- Intestazione principale -->
 
-    <!-- Form per aggiungere un nuovo elemento -->
+    <!-- Form per aggiungere un nuovo elemento alla lista -->
     <form action="{{ url_for('aggiungi') }}" method="POST">
         <label for="elemento">Aggiungi un elemento:</label>
-        <input type="text" id="elemento" name="elemento" required>
-        <button type="submit">Aggiungi</button>
+        <input type="text" id="elemento" name="elemento" required> <!-- Campo di input per l'elemento -->
+        <button type="submit">Aggiungi</button> <!-- Pulsante per inviare il form -->
     </form>
 
-    <h2>Elementi nella lista</h2>
+    <h2>Elementi nella lista</h2> <!-- Titolo della lista -->
+
+    <!-- Se ci sono elementi, li mostriamo in una lista non ordinata -->
     {% if items %}
         <ul>
+        <!-- Per ogni elemento nella lista, creiamo una voce nella lista HTML -->
         {% for item in items %}
             <li>
-                {{ item.elemento }}
+                {{ item.elemento }} <!-- Mostriamo il nome dell'elemento -->
+                <!-- Form per rimuovere un singolo elemento -->
                 <form action="{{ url_for('rimuovi', id=item.id) }}" method="POST" style="display:inline;">
-                    <button type="submit">Rimuovi</button>
+                    <button type="submit">Rimuovi</button> <!-- Pulsante per rimuovere l'elemento -->
                 </form>
             </li>
         {% endfor %}
         </ul>
     {% else %}
+        <!-- Se la lista è vuota, mostriamo un messaggio -->
         <p>La lista è vuota.</p>
     {% endif %}
 
-    <!-- Form per svuotare la lista -->
+    <!-- Form per svuotare completamente la lista -->
     <form action="{{ url_for('svuota') }}" method="POST">
-        <button type="submit">Svuota la lista</button>
+        <button type="submit">Svuota la lista</button> <!-- Pulsante per svuotare la lista -->
     </form>
 
 </body>
